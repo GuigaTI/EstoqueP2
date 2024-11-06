@@ -1,0 +1,28 @@
+Exercício de Sistema de Controle de Estoque com Spring e PostgreSQL
+Desenvolva uma aplicação Spring para o controle de estoque de uma loja com persistência no banco
+de dados PostgreSQL. O sistema deve incluir:
+1. Classe Produto com os seguintes atributos:
+• codigo (String): código do produto.
+• nome (String): nome do produto.
+• quantidade (int): quantidade em estoque.
+• preco (double): preço do produto.
+2. Métodos na Classe Produto para:
+• atualizarQuantidade(int novaQuantidade): atualizar a quantidade do produto em
+estoque.
+• calcularValorEstoque(): calcular o valor total do estoque do produto (quantidade *
+preço).
+• exibirInformacoes(): exibir as informações do produto.
+3. Classe Loja com:
+• Atributo produtos (ArrayList<Produto>): lista de produtos disponíveis na loja.
+• Métodos para adicionar, remover e buscar produtos.
+• Método para exibir todos os produtos disponíveis.
+• Método para calcular o valor total do estoque da loja.
+4. Persistência e Consultas:
+• Use PostgreSQL para persistência dos dados.
+• Implemente queries:
+• Nativas: para obter o valor total do estoque de todos os produtos.
+• Derivadas: para buscar produtos por nome e código.
+• JPQL: para listar todos os produtos organizados por nome ou preço.
+5. Classe Main:
+• Crie objetos de cada classe.
+• Realize testes com métodos da aplicação.

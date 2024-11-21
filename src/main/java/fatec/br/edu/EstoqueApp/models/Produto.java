@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Entity
@@ -24,6 +26,13 @@ public class Produto {
     @Column(name = "preco")
     private double preco;
 
+    @ManyToMany
+    @JoinTable(
+            name = "loja_produto",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "loja_id")
+    )
+    private List<Loja> lojas;
       public Produto() {
     }
 
@@ -95,5 +104,32 @@ public class Produto {
            "Preço: " + preco + "\n" +
            "--------------------------"; // Linha de separação
     }
+    public static Produto adicionarProduto(Scanner scanner) {
+        System.out.print("Digite o código do produto: ");
+        String codigo = scanner.nextLine();
+        System.out.print("Digite o nome do produto: ");
+        String nome = scanner.nextLine();
+        System.out.print("Digite a quantidade do produto: ");
+        int quantidade = scanner.nextInt();
+        System.out.print("Digite o preço do produto: ");
+        double preco = scanner.nextDouble();
+        scanner.nextLine(); // Limpar o buffer
+        return new Produto(codigo, nome, quantidade, preco);
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Loja> getLojas() {
+        return lojas;
+    }
+
+    public void setLojas(List<Loja> lojas) {
+        this.lojas = lojas;
+    }
 }

@@ -46,6 +46,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, String> {
     @Query("SELECT p FROM Produto p JOIN p.lojas l WHERE l.id = :lojaId ORDER BY p.preco")
     List<Produto> findAllByLojaOrderByPreco(@Param("lojaId") Long lojaId);
 
+    @Query("SELECT p FROM Produto p ORDER BY p.preco")
+    List<Produto> findAllOrderByPreco();
+
     @Query("SELECT SUM(p.preco * p.quantidade) FROM Produto p JOIN p.lojas l WHERE l.id = :lojaId")
     BigDecimal calcularValorTotalPorLoja(@Param("lojaId") Long lojaId);
 

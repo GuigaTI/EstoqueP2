@@ -9,7 +9,6 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,13 +21,21 @@ public class EstoqueService {
 
     private Loja lojaAtual;
 
+    //Adiciona produto no banco de dados
     public void adicionarProduto(Produto novoProduto) {
         produtoRepository.save(novoProduto);
     }
-    public List<Produto> buscarPorNome(String nome) {
+
+    //Buscar produto na loja por nome
+    public List<Produto> buscarPorNomeLoja(String nome) {
         Loja lojaAtual = getLojaAtual();
         return produtoRepository.findByNomeAndLoja(nome, lojaAtual.getId());
     }
+    //Buscar produto no banco de dados por nome
+    public List<Produto> buscarPorNome(String nome) {
+        return produtoRepository.findByNome(nome);
+    }
+    //Buscar produto na loja por codigo
     public Produto buscarProdutoPorCodigo(String codigo) {
         Loja lojaAtual = getLojaAtual();
         return produtoRepository.findByCodigoAndLoja(codigo, lojaAtual.getId())
@@ -39,12 +46,14 @@ public class EstoqueService {
         return produtoRepository.findAllByLojaOrderByNome(lojaAtual.getId());
     }
     public List<Produto> listarProdutosOrdenadosPorPreco() {
+        return produtoRepository.findAllOrderByPreco();
+    }
+    public List<Produto> listarProdutosOrdenadosPorPrecoLoja(Long id) {
         Loja lojaAtual = getLojaAtual();
         return produtoRepository.findAllByLojaOrderByPreco(lojaAtual.getId());
     }
-    public BigDecimal calcularValorTotalEstoque() {
-        Loja lojaAtual = getLojaAtual();
-        return produtoRepository.calcularValorTotalPorLoja(lojaAtual.getId());
+    public Double calcularValorTotalEstoque() {
+        return produtoRepository.obterValorTotalEstoque();
     }
     public void selecionarLoja(Long lojaId) {
         lojaAtual = produtoRepository.findByIdWithProdutos(lojaId)
@@ -94,7 +103,6 @@ public class EstoqueService {
         produtoRepository.delete(produto); // Remove o produto do banco de dados
     }
 
-
     public List<Produto> listarProdutosDaLoja(Long lojaId) {
         return produtoRepository.listarProdutosPorLoja(lojaId);
     }
@@ -116,12 +124,6 @@ public class EstoqueService {
         produtoRepository.save(produto); // Persistir relação no banco
     }
 
-    public void removerProdutoDaLoja(Long produtoId, Long lojaId) {
-        Produto produto = produtoRepository.findById(String.valueOf(produtoId))
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-        produto.getLojas().removeIf(loja -> loja.getId().equals(lojaId));
-        produtoRepository.save(produto); // Persistir a remoção no banco
-    }
     public Loja getLojaAtual() {
         if (lojaAtual == null) {
             throw new IllegalStateException("Nenhuma loja está selecionada atualmente.");

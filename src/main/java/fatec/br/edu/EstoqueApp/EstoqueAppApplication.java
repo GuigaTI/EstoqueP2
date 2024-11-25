@@ -45,11 +45,14 @@ public class EstoqueAppApplication implements CommandLineRunner {
             System.out.println("9. Calcular Valor Total do Estoque (Banco de Dados)");
             System.out.println("10. Remover Produto do Banco de Dados");
             System.out.println("11. Remover Produto da Loja Selecionada");
-            System.out.println("12. Buscar Produto na Loja Selecionada");
-            System.out.println("13. Calcular Estoque da Loja Selecionada");
-            System.out.println("14. Mostrar Estoque da Loja Selecionada");
-            System.out.println("15. Sair da Loja Selecionada");
-            System.out.println("16. Sair\n");
+            System.out.println("12. Buscar Produto na Loja Selecionada por codigo");
+            System.out.println("13. Buscar Produto na Loja Selecionada por nome");
+            System.out.println("14. Calcular Estoque da Loja Selecionada");
+            System.out.println("15. Mostrar Estoque da Loja Selecionada");
+            System.out.println("16. Mostrar Estoque da Loja Selecionada ordenado por Preço");
+            System.out.println("17. Sair da Loja Selecionada");
+            System.out.println("18. Sair\n");
+
             System.out.print("Escolha uma opção: ");
 
             int escolha = scanner.nextInt();
@@ -95,6 +98,7 @@ public class EstoqueAppApplication implements CommandLineRunner {
                     System.out.println("Produto adicionado ao banco de dados.");
                     break;
 
+                    //Associar produto a uma loja
                 case 4:
                     if (estoqueService.getLojaAtual() == null) {
                         System.out.println("Selecione uma loja primeiro.");
@@ -108,11 +112,10 @@ public class EstoqueAppApplication implements CommandLineRunner {
 
                 case 5:
                     // Buscar Produto por Nome no Banco de Dados
-                    System.out.print("Digite o nome do produto para buscar: ");
+                    System.out.print("Digite o nome do produto para buscar no Banco de Dados: ");
                     String nome = scanner.nextLine();
                     estoqueService.buscarPorNome(nome).forEach(System.out::println);
                     break;
-
                 case 6:
                     // Buscar Produto por Código no Banco de Dados
                     System.out.print("Digite o código do produto para buscar: ");
@@ -147,6 +150,7 @@ public class EstoqueAppApplication implements CommandLineRunner {
                     // Remover Produto da Loja Selecionada
                     if (estoqueService.getLojaAtual() == null) {
                         System.out.println("Selecione uma loja primeiro.");
+                        break;
                     } else {
                         System.out.print("Digite o código do produto a ser removido: ");
                         cod = scanner.nextLine();
@@ -154,10 +158,11 @@ public class EstoqueAppApplication implements CommandLineRunner {
                         System.out.println("Produto removido da loja.");
                     }
                     break;
-
+                //Buscar Produto por codigo na Loja
                 case 12:
                     if (estoqueService.getLojaAtual() == null) {
                         System.out.println("Selecione uma loja primeiro.");
+                        break;
                     } else {
                         System.out.print("Digite o código do produto a buscar na loja: ");
                         String codigoProduto = scanner.nextLine();
@@ -167,27 +172,51 @@ public class EstoqueAppApplication implements CommandLineRunner {
                     break;
 
                 case 13:
+                    // Buscar Produto por Nome na Loja Selecionada
                     if (estoqueService.getLojaAtual() == null) {
                         System.out.println("Selecione uma loja primeiro.");
+                        break;
+                    }
+                    else {
+                        System.out.print("Digite o nome do produto para buscar na Loja: ");
+                        nome = scanner.nextLine();
+                        estoqueService.buscarPorNomeLoja(nome).forEach(System.out::println);
+                        break;
+                    }
+                    //Calcular valor do estoque da Loja Selecionada
+                case 14:
+                    if (estoqueService.getLojaAtual() == null) {
+                        System.out.println("Selecione uma loja primeiro.");
+                        break;
                     } else {
                         Double valorTotal = estoqueService.calcularValorEstoquePorLoja(estoqueService.getLojaAtual().getId());
                         System.out.println("Valor total do estoque da loja: R$ " + valorTotal);
                     }
                     break;
-
-                case 14:
+                //Listar produtos da loja selecionada
+                case 15:
                     if (estoqueService.getLojaAtual() == null) {
                         System.out.println("Selecione uma loja primeiro.");
+                        break;
                     } else {
                         List<Produto> produtos = estoqueService.listarProdutosDaLoja(estoqueService.getLojaAtual().getId());
                         produtos.forEach(System.out::println);
                     }
                     break;
-                case 15:
+                case 16:
+                    if (estoqueService.getLojaAtual() == null) {
+                        System.out.println("Selecione uma loja primeiro.");
+                        break;
+                    } else {
+                        List<Produto> produtos = estoqueService.listarProdutosOrdenadosPorPrecoLoja(estoqueService.getLojaAtual().getId());
+                        produtos.forEach(System.out::println);
+                    }
+                    break;
+                case 17:
                     //Sair da loja selecionada
                     estoqueService.sairDaLoja();
                     break;
-                case 16:
+                case 18:
                     // Sair
                     System.out.println("Saindo...");
                     scanner.close();

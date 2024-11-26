@@ -1,0 +1,7 @@
+fatec\br\edu\EstoqueApp\services\EstoqueService.class
+fatec\br\edu\EstoqueApp\EstoqueAppApplication.class
+fatec\br\edu\EstoqueApp\models\Produto.class
+fatec\br\edu\EstoqueApp\repositories\LojaRepository.class
+fatec\br\edu\EstoqueApp\models\Loja.class
+fatec\br\edu\EstoqueApp\services\LojaService.class
+fatec\br\edu\EstoqueApp\repositories\ProdutoRepository.class
